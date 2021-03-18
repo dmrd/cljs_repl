@@ -4,6 +4,14 @@
   npx shadow-cljs watch app
 #+END_SRC
 
+** Next steps
+
+- SCI
+  - [ ] persist state to environment (allow defining vars)
+- Self-hosted clojurescript as SCI alternative
+- UI
+  - Selecting items from history
+
 ** References
 - [[https://github.com/borkdude/sci][Small Clojure Interpreter]]
 - [[https://github.com/mhuebert/shadow-bootstrap-example][Bootstrapped cljs example]]
