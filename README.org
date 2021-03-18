@@ -5,5 +5,5 @@
 #+END_SRC
 
 ** References
-- [https://github.com/borkdude/sci][Small Clojure Interpreter]
-- [https://github.com/mhuebert/shadow-bootstrap-example][Bootstrapped cljs example]
+- [[https://github.com/borkdude/sci][Small Clojure Interpreter]]
+- [[https://github.com/mhuebert/shadow-bootstrap-example][Bootstrapped cljs example]]
