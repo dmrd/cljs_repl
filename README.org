@@ -1,0 +1,9 @@
+* Experiments with self hosted cljs
+** Running
+#+BEGIN_SRC sh
+  npx shadow-cljs watch app
+#+END_SRC
+
+** References
+- [https://github.com/borkdude/sci][Small Clojure Interpreter]
+- [https://github.com/mhuebert/shadow-bootstrap-example][Bootstrapped cljs example]
