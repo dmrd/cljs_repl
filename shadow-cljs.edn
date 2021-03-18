@@ -1,7 +1,9 @@
 {:source-paths ["src"]
  :dependencies [
                 [reagent "1.0.0-rc1"]
-                [cider/cider-nrepl "0.25.5"]
+                [borkdude/sci "0.2.4"]
+                [cider/cider-nrepl "0.25.9"]
+                [figwheel-sidecar "0.5.20"]
 ]
  :nrepl {:port 9000}
  :dev-http {8081 "public"}

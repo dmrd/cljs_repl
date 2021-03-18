@@ -1,21 +1,35 @@
 (ns cljs-repl.core
   (:require [reagent.core :as r]
-            [reagent.dom :as rdom]))
+            [reagent.dom :as rdom]
+            [sci.core :as sci]
+            ))
 
 (defonce db (r/atom {:history []}))
 
-(defn process-inputs [inputs]
-  (swap! db update :history conj inputs)  ; placeholder: append input directly
+(defn sci-execute-with-handler [inputs]
+  (try (let [output (sci/eval-string inputs)]
+         {:output output}
+         )
+       (catch :default e {:exception e}))
   )
 
-(defn repl []
+(defn process-inputs [inputs]
+  (if (not= 0 (count inputs))
+    (let [output-map (sci-execute-with-handler inputs)
+          combined (merge {:input inputs} output-map)
+          ]
+                                        ;(swap! db update :history conj combined)
+      (swap! db update :history conj combined)
+      )
+    ))
+
+(defn ui-repl []
   (let [repl_value (r/atom "")]
     (fn []
-      [:div
+      [:div ">"
        [:input {:type :text :value @repl_value
                 :on-change #(reset! repl_value (-> % .-target .-value))
                 :on-key-press (fn [e]
-                                (println "key press" (.-charCode e))
                                 (if (= 13 (.-charCode e))
                                   (do
                                     (process-inputs @repl_value)
@@ -23,16 +37,27 @@
                                     )))
                 }]])))
 
-(defn history [] [:ul
-                  (for [entry (rseq @(r/cursor db [:history]))]
-                    ^{:key entry} [:li entry]
-                    )
-                  ])
+(defn ui-history-entry [entry]
+  (let [input (:input entry)
+        output (pr-str (if (contains? entry :exception)
+                         (:exception entry)
+                         (:output entry)))
+        formatted (clojure.string/join " => " [input output])
+        ]
+    [:li formatted]
+    )
+  )
+
+(defn ui-history [] [:ul
+                     (for [entry (rseq @(r/cursor db [:history]))]
+                       ^{:key entry} [ui-history-entry entry]
+                       )
+                     ])
 
 (defn ui []
   [:div
-   [repl]
-   [history]])
+   [ui-repl]
+   [ui-history]])
 
 (defn render []
   (rdom/render [ui] (js/document.getElementById "app"))
